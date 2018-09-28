@@ -177,11 +177,39 @@ public class ForeController {
     }
 
     @RequestMapping("foresearch")
-    public String search( @RequestParam("keyword") String keyword, Model model){
+    public String search( @RequestParam("keyword") String keyword,String sort, Model model){
+
         PageHelper.offsetPage(0,20);
         List<Product> products = productService.search(keyword);
         productService.setSaleAndReviewNumber(products);
+
+        if(null!=sort){
+            switch(sort){
+                case "review":
+                    Collections.sort(products,new ProductReviewComparator());
+                    break;
+                case "date" :
+                    Collections.sort(products,new ProductDateComparator());
+                    break;
+
+                case "saleCount" :
+                    Collections.sort(products,new ProductSaleCountComparator());
+                    break;
+
+                case "price":
+                    Collections.sort(products,new ProductPriceComparator());
+                    break;
+
+                case "all":
+                    Collections.sort(products,new ProductAllComparator());
+                    break;
+
+                default:
+            }
+        }
+
         model.addAttribute("ps",products);
+        model.addAttribute("keyword",keyword);
         return "fore/searchResult";
     }
 
