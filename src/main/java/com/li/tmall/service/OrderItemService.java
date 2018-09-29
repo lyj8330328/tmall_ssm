@@ -53,4 +53,11 @@ public interface OrderItemService {
      * @return
      */
     int getSaleCount(int pid);
+
+    /**
+     * 根据用户id查询对应的订单条目
+     * @param uid
+     * @return
+     */
+    List<OrderItem> listByUser(int uid);
 }

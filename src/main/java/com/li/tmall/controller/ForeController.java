@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +49,6 @@ public class ForeController {
         productService.fill(cs);
         productService.fillByRow(cs);
         model.addAttribute("cs", cs);
-
         for (Category category :cs){
             System.out.println(category.getName());
             for (Product product : category.getProductsRow().get(0)){
@@ -211,6 +211,89 @@ public class ForeController {
         model.addAttribute("ps",products);
         model.addAttribute("keyword",keyword);
         return "fore/searchResult";
+    }
+
+    @RequestMapping("forebuyone")
+    public String buyone(@RequestParam("pid") int pid,@RequestParam("num") int num,HttpSession session){
+        Product product =productService.get(pid);
+        User user = (User) session.getAttribute("user");
+
+        boolean found = false;
+        int orderItemId = 0;
+
+        List<OrderItem> orderItems = orderItemService.listByUser(user.getId());
+        for (OrderItem orderItem : orderItems){
+            if (orderItem.getPid().intValue() == product.getId().intValue()){
+                orderItem.setNumber(orderItem.getNumber()+num);
+                orderItemService.update(orderItem);
+                found = true;
+                orderItemId = orderItem.getId();
+                break;
+            }
+        }
+
+        if (!found){
+            OrderItem orderItem = new OrderItem();
+            orderItem.setUid(user.getId());
+            orderItem.setNumber(num);
+            orderItem.setPid(product.getId());
+            orderItemService.add(orderItem);
+            //mybatis自动生成id
+            System.out.println(orderItem.getId());
+            orderItemId = orderItem.getId();
+        }
+        return "redirect:forebuy?oiid="+orderItemId;
+    }
+
+    @RequestMapping("forebuy")
+    public String buy(Model model,String[] oiid,HttpSession session){
+        List<OrderItem> orderItems = new ArrayList<>();
+        float total = 0;
+        for (String str_id : oiid){
+            int id = Integer.parseInt(str_id);
+            OrderItem orderItem = orderItemService.get(id);
+            total += orderItem.getNumber()*orderItem.getProduct().getPromotePrice();
+            orderItems.add(orderItem);
+        }
+
+        session.setAttribute("ois",orderItems);
+        model.addAttribute("total",total);
+        return "fore/buy";
+    }
+
+    @RequestMapping("foreaddCart")
+    @ResponseBody
+    public String addCart(@RequestParam("pid") int pid,@RequestParam("num") int num,HttpSession session){
+        Product product =productService.get(pid);
+        User user = (User) session.getAttribute("user");
+
+        boolean found = false;
+        List<OrderItem> orderItems = orderItemService.listByUser(user.getId());
+        for (OrderItem orderItem : orderItems){
+            if (orderItem.getPid().intValue() == product.getId().intValue()){
+                orderItem.setNumber(orderItem.getNumber()+num);
+                orderItemService.update(orderItem);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found){
+            OrderItem orderItem = new OrderItem();
+            orderItem.setUid(user.getId());
+            orderItem.setNumber(num);
+            orderItem.setPid(product.getId());
+            orderItemService.add(orderItem);
+        }
+        return "success";
+    }
+
+    @RequestMapping("forecart")
+    public String cart(Model model,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<OrderItem> orderItems = orderItemService.listByUser(user.getId());
+        model.addAttribute("ois",orderItems);
+        return "fore/cart";
     }
 
 
