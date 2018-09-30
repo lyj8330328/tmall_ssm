@@ -9,7 +9,7 @@
          pageEncoding="UTF-8" isELIgnored="false"%>
 
 <div >
-    <a href="${contextPath}">
+    <a href="${contextPath}/forehome">
         <img id="simpleLogo" class="simpleLogo" src="${pageContext.request.contextPath}/img/site/simpleLogo.png">
     </a>
 

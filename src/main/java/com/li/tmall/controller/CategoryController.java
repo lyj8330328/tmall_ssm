@@ -37,15 +37,7 @@ public class CategoryController {
         //页面中的start会自动注入到page对象当中
         PageHelper.offsetPage(page.getStart(),page.getCount());
 
-        System.out.println("开始："+page.getStart()+","+"数量："+page.getCount());
         List<Category> categoryList = categoryService.list();
-        //List<Category> categoryList = categoryService.list(page);
-        //int total = categoryService.total();
-        //page.setTotal(total);
-
-        for (Category c:categoryList) {
-            System.out.println(c);
-        }
         int total =(int) new PageInfo<>(categoryList).getTotal();
         page.setTotal(total);
         model.addAttribute("cs",categoryList);

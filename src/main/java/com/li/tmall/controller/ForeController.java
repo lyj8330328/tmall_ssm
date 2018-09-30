@@ -49,13 +49,6 @@ public class ForeController {
         productService.fill(cs);
         productService.fillByRow(cs);
         model.addAttribute("cs", cs);
-        for (Category category :cs){
-            System.out.println(category.getName());
-            for (Product product : category.getProductsRow().get(0)){
-                System.out.println(product);
-            }
-        }
-
         return "fore/home";
     }
 
@@ -294,6 +287,37 @@ public class ForeController {
         List<OrderItem> orderItems = orderItemService.listByUser(user.getId());
         model.addAttribute("ois",orderItems);
         return "fore/cart";
+    }
+
+    @RequestMapping("forechangeOrderItem")
+    @ResponseBody
+    public String changeOrderItem(@RequestParam("pid") int pid,@RequestParam("number") int number,Model model,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if (user == null){
+            return "fail";
+        }else {
+            List<OrderItem> orderItems = orderItemService.listByUser(user.getId());
+            for (OrderItem orderItem : orderItems){
+                if (orderItem.getPid() == pid){
+                    orderItem.setNumber(number);
+                    orderItemService.update(orderItem);
+                    break;
+                }
+            }
+            return "success";
+        }
+    }
+
+    @RequestMapping("foredeleteOrderItem")
+    @ResponseBody
+    public String deleteOrderItem(@RequestParam("oiid") int oiid,Model model,HttpSession session){
+        User user = (User)session.getAttribute("user");
+        if (user != null){
+            orderItemService.delete(oiid);
+            return "success";
+        }else {
+            return "fail";
+        }
     }
 
 
