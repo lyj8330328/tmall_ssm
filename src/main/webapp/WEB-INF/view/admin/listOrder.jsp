@@ -76,7 +76,7 @@
                                     <c:forEach items="${o.orderItems}" var="oi">
                                         <tr>
                                             <td align="left">
-                                                <img width="40px" height="40px" src="${pageContext.request.contextPath}/image/productSingle/${oi.product.productImage.id}.jpg">
+                                                <img width="40px" height="40px" src="${pageContext.request.contextPath}/img/productSingle/${oi.product.productImage.id}.jpg">
                                             </td>
                                             <td>
                                                 <a href="foreproduct?pid=${oi.product.id}"><span>${oi.product.name}</span></a>

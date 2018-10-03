@@ -1,6 +1,7 @@
 package com.li.tmall.service;
 
 import com.li.tmall.pojo.Order;
+import com.li.tmall.pojo.OrderItem;
 
 import java.util.List;
 
@@ -47,4 +48,20 @@ public interface OrderService {
      * @return
      */
     List<Order> list();
+
+    /**
+     * 根据订单和订单项算出支付金额并返回，且保存订单对象
+     * @param order
+     * @param orderItems
+     * @return
+     */
+    float addDetail(Order order, List<OrderItem> orderItems);
+
+    /**
+     * 根据用户id查询所有状态（不包括删除状态）订单
+     * @param uid
+     * @param excludedStatus
+     * @return
+     */
+    List<Order> list(int uid,String excludedStatus);
 }

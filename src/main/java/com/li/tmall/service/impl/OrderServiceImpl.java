@@ -3,11 +3,15 @@ package com.li.tmall.service.impl;
 import com.li.tmall.mapper.OrderMapper;
 import com.li.tmall.pojo.Order;
 import com.li.tmall.pojo.OrderExample;
+import com.li.tmall.pojo.OrderItem;
 import com.li.tmall.pojo.User;
+import com.li.tmall.service.OrderItemService;
 import com.li.tmall.service.OrderService;
 import com.li.tmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderItemService orderItemService;
 
     @Override
     public void add(Order order) {
@@ -52,6 +59,30 @@ public class OrderServiceImpl implements OrderService {
         List<Order> result = orderMapper.selectByExample(example);
         setUser(result);
         return result;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,rollbackForClassName = "Exception")
+    public float addDetail(Order order, List<OrderItem> orderItems) {
+        float total = 0;
+        add(order);
+        if (false){
+            throw new RuntimeException();
+        }
+        for (OrderItem orderItem : orderItems){
+            orderItem.setOid(order.getId());
+            orderItemService.update(orderItem);
+            total+=orderItem.getProduct().getPromotePrice()*orderItem.getNumber();
+        }
+        return total;
+    }
+
+    @Override
+    public List<Order> list(int uid, String excludedStatus) {
+        OrderExample example = new OrderExample();
+        example.createCriteria().andUidEqualTo(uid).andStatusNotEqualTo(excludedStatus);
+        example.setOrderByClause("id desc");
+        return orderMapper.selectByExample(example);
     }
 
     public void setUser(List<Order> orders){

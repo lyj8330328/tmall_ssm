@@ -11,6 +11,11 @@
 <script>
 
     $(function(){
+        // $(".addCartButton").html("已加入购物车");
+        // $(".addCartButton").attr("disabled","disabled");
+        // $(".addCartButton").css("background-color","lightgray")
+        // $(".addCartButton").css("border-color","lightgray")
+        // $(".addCartButton").css("color","black")
         var stock = ${p.stock};
         $(".productNumberSetting").keyup(function(){
             var num= $(".productNumberSetting").val();
@@ -58,7 +63,6 @@
                                     $(".addCartButton").css("background-color","lightgray")
                                     $(".addCartButton").css("border-color","lightgray")
                                     $(".addCartButton").css("color","black")
-
                                 }
                                 else{
 

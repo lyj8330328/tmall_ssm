@@ -43,8 +43,18 @@ public interface OrderItemService {
      */
     List<OrderItem> list();
 
+    /**
+     * 为订单对象order填充total、totalNumber、orderItems等属性值，为order对应的orderItem填充product属性值
+     * 参数为order对象集合
+     * @param orders
+     */
     void fill(List<Order> orders);
 
+    /**
+     * 为订单对象order填充total、totalNumber、orderItems等属性值，为order对应的orderItem填充product属性值
+     * 参数为单个order对象
+     * @param order
+     */
     void fill(Order order);
 
     /**

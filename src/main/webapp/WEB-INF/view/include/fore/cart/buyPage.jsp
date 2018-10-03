@@ -115,7 +115,7 @@
                 <div class="pull-left">
                     <span class="leaveMessageText">给卖家留言:</span>
                     <span>
-                    <img class="leaveMessageImg" src="img/site/leaveMessage.png">
+                    <img class="leaveMessageImg" src="${pageContext.request.contextPath}/img/site/leaveMessage.png">
                 </span>
                     <span class="leaveMessageTextareaSpan">
                     <textarea name="userMessage" class="leaveMessageTextarea"></textarea>
