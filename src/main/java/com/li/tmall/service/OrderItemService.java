@@ -70,4 +70,11 @@ public interface OrderItemService {
      * @return
      */
     List<OrderItem> listByUser(int uid);
+
+    /**
+     * 根据订单id获取订单条目
+     * @param oid
+     * @return
+     */
+    List<OrderItem> listByOid(int oid);
 }

@@ -64,4 +64,6 @@ public interface OrderService {
      * @return
      */
     List<Order> list(int uid,String excludedStatus);
+
+    void updateStock(int oid);
 }

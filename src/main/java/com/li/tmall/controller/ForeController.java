@@ -347,6 +347,9 @@ public class ForeController {
         order.setPayDate(new Date());
         orderService.update(order);
         model.addAttribute("o",order);
+
+        //根据订单更新库存
+        orderService.updateStock(oid);
         return "fore/payed";
     }
 

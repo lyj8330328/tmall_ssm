@@ -1,12 +1,10 @@
 package com.li.tmall.service.impl;
 
 import com.li.tmall.mapper.OrderMapper;
-import com.li.tmall.pojo.Order;
-import com.li.tmall.pojo.OrderExample;
-import com.li.tmall.pojo.OrderItem;
-import com.li.tmall.pojo.User;
+import com.li.tmall.pojo.*;
 import com.li.tmall.service.OrderItemService;
 import com.li.tmall.service.OrderService;
+import com.li.tmall.service.ProductService;
 import com.li.tmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +29,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private ProductService productService;
 
     @Override
     public void add(Order order) {
@@ -83,6 +84,17 @@ public class OrderServiceImpl implements OrderService {
         example.createCriteria().andUidEqualTo(uid).andStatusNotEqualTo(excludedStatus);
         example.setOrderByClause("id desc");
         return orderMapper.selectByExample(example);
+    }
+
+    @Override
+    public void updateStock(int oid) {
+        //根据order id获取对应的orderitem
+        List<OrderItem> orderItems = orderItemService.listByOid(oid);
+        for (OrderItem orderItem : orderItems){
+            Product product = productService.get(orderItem.getPid());
+            product.setStock(product.getStock() - orderItem.getNumber());
+            productService.update(product);
+        }
     }
 
     public void setUser(List<Order> orders){
