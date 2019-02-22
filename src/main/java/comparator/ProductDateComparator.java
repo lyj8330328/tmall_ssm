@@ -5,7 +5,7 @@ import com.li.tmall.pojo.Product;
 import java.util.Comparator;
 
 /**
- * Author: 98050
+ * @Author: 98050
  * Time: 2018-09-27 23:20
  * Feature:
  */

@@ -6,7 +6,6 @@ import com.li.tmall.pojo.Order;
 import com.li.tmall.pojo.OrderItem;
 import com.li.tmall.service.OrderItemService;
 import com.li.tmall.service.OrderService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

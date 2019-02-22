@@ -5,7 +5,6 @@ import com.li.tmall.pojo.OrderItem;
 import com.li.tmall.pojo.User;
 import com.li.tmall.service.CategoryService;
 import com.li.tmall.service.OrderItemService;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

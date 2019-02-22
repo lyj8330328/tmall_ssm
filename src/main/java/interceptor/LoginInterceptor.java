@@ -60,7 +60,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 "search"
         };
         String uri = request.getRequestURI();
-        System.out.println(uri);
         uri = StringUtils.remove(uri,contextPath);
         if (uri.startsWith("/fore")){
             String method = StringUtils.substringAfterLast(uri,"/fore");
